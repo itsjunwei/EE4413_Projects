@@ -28,7 +28,7 @@ end
 
 % IIR Bandpass Butterworth Filter to filter out the desired frequency
 
-F = 697
+F = 697;
 Wp = [F-10 F+10]*2/Fs;            % Passband Frequencies
 Ws = [F-500 F+500]*2/Fs;           % Stopband Frequencies 
 Rp = 3;                         % Passband Ripple 
@@ -67,4 +67,24 @@ title('Frequency Response');
 xlabel('Frequency (Hz)');
 ylabel('Mag. of Frequency Response');
 
+
+
+% Since we determine the above steps to be accurate, we can 
+% carry on the fitler out the required waveforms for each frequency 
+% when the person presses the button
+
+buttons = {'1','2','3','4','5','6','7','8','9','*','0','#'};
+frequencies = [];
+for r=1:4
+    for c=1:3
+        frequencies = [ frequencies [low_freqs(r) ; high_freqs(c)] ];
+    end
+end
+
+for number=1:12
+    freqs = frequencies(number);
+    f1 = freqs(1);
+    f2 = freqs(2);
+    fprintf("%d %d", f1, f2);
+end
 
