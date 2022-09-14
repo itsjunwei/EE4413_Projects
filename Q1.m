@@ -11,8 +11,8 @@ high_freqs  = [1209 1336 1477]; % High Frequencies (Columns)
 % Stable: If and only if all the poles of the filter transfer 
 % function lie inside the unit circle.
 
-Fs  = 3000; % Sampling Frequency of 3kHz
-t   = (1:9000)/Fs; % Sampled Waveform from t=0 to t=3 seconds
+Fs  = 8000; % Sampling Frequency of 3kHz
+t   = (1:800)/Fs; % Sampled Waveform from t=0 to t=3 seconds
 
 full_waveform = 0; % Establish a waveform of all frequencies
 
@@ -73,18 +73,21 @@ ylabel('Mag. of Frequency Response');
 % carry on the fitler out the required waveforms for each frequency 
 % when the person presses the button
 
-buttons = {'1','2','3','4','5','6','7','8','9','*','0','#'};
-frequencies = [];
-for r=1:4
-    for c=1:3
-        frequencies = [ frequencies [low_freqs(r) ; high_freqs(c)] ];
-    end
-end
+buttons = [1 2 3; 4 5 6; 7 8 9; '*' 0 '#'];
 
-for number=1:12
-    freqs = frequencies(number);
-    f1 = freqs(1);
-    f2 = freqs(2);
-    fprintf("%d %d", f1, f2);
+
+for number=0:9
+    [row,col] = find(buttons==number);
+    f1 = low_freqs(row);
+    f2 = high_freqs(col);
+    sf1 = filter_waveform(f1, full_waveform);
+    sf2 = filter_waveform(f2, full_waveform);
+    sfinal = sf1 + sf2;
+    subplot(4,3,number+1);
+    plot(t,sfinal);
+    xlabel('Time');
+    ylabel('Amp');
+    title(sprintf("Button : %d", number));
+%     axis([0 0.01 -2.5 2.5]);
 end
 
